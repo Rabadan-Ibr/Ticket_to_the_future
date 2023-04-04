@@ -1,0 +1,5 @@
+django==4.2
+djangorestframework==3.14.0
+Pillow==9.5.0
+django-filter==23.1
+drf-yasg==1.21.5
