@@ -1,3 +1,4 @@
+from django.db.models import Count, Sum, Func
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.mixins import (CreateModelMixin, DestroyModelMixin,
                                    ListModelMixin)
@@ -11,8 +12,15 @@ from company.models import Department, Employee
 
 
 class DepartmentViewSet(ListModelMixin, GenericViewSet):
-    queryset = Department.objects.prefetch_related('employees')
+    queryset = Department.objects
     serializer_class = DepartmentSerializer
+
+    def get_queryset(self):
+        return (
+            self.queryset
+                .annotate(employees_count=Count('employees'))
+                .annotate(total_salary=Sum('employees__salary'))
+        )
 
 
 class EmployeeViewSet(

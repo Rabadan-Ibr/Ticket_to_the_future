@@ -53,6 +53,9 @@ class Employee(models.Model):
         verbose_name_plural = 'Сотрудники'
         ordering = 'surname', 'name'
 
+    def get_full_name(self):
+        return f'{self.surname} {self.name} {self.patronymic}'
+
     def delete(self, using=None, keep_parents=False):
         self.photo.delete()
         return super().delete(using, keep_parents)
@@ -70,4 +73,4 @@ class Employee(models.Model):
         return super().save(*args, **kwargs)
 
     def __str__(self):
-        return f'{self.surname} {self.name} {self.patronymic}'
+        return self.get_full_name()

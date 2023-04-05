@@ -4,18 +4,16 @@ from company.models import Department, Employee
 
 
 class DepartmentSerializer(serializers.ModelSerializer):
-    employees_count = serializers.SerializerMethodField()
-    total_salary = serializers.SerializerMethodField()
+    employees_count = serializers.IntegerField(read_only=True)
+    total_salary = serializers.DecimalField(
+        read_only=True,
+        decimal_places=3,
+        max_digits=10,
+    )
 
     class Meta:
         model = Department
         fields = 'id', 'name', 'director', 'employees_count', 'total_salary'
-
-    def get_total_salary(self, obj):
-        return sum(employees.salary for employees in obj.employees.all())
-
-    def get_employees_count(self, obj):
-        return obj.employees.count()
 
 
 class EmployeeSerializer(serializers.ModelSerializer):
