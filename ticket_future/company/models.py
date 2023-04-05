@@ -53,7 +53,6 @@ class Employee(models.Model):
         verbose_name_plural = 'Сотрудники'
         ordering = 'surname', 'name'
 
-
     def delete(self, using=None, keep_parents=False):
         self.photo.delete()
         return super().delete(using, keep_parents)
