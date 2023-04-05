@@ -1,4 +1,5 @@
-from django.db.models import Count, Sum, Func
+from django.db.models import Count, Sum, Value
+from django.db.models.functions import Concat
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.mixins import (CreateModelMixin, DestroyModelMixin,
                                    ListModelMixin)
@@ -35,3 +36,10 @@ class EmployeeViewSet(
     filter_backends = DjangoFilterBackend,
     filterset_class = EmployeeFilter
     permission_classes = IsAuthenticated,
+
+    def get_queryset(self):
+        return self.queryset.annotate(
+            full_name=Concat(
+                'name', Value(' '), 'surname', Value(' '), 'patronymic'
+            )
+        )

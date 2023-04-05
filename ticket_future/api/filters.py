@@ -4,13 +4,13 @@ from company.models import Employee
 
 
 class EmployeeFilter(FilterSet):
-    surname = CharFilter(method='get_by_surname')
+    full_name = CharFilter(method='get_by_full_name')
     department = NumberFilter(field_name='department_id')
 
     class Meta:
         model = Employee
-        fields = 'surname', 'department'
+        fields = 'full_name', 'department'
 
-    def get_by_surname(self, queryset, name, value):
-        return (queryset.filter(surname__istartswith=value).all()
+    def get_by_full_name(self, queryset, name, value):
+        return (queryset.filter(full_name__contains=value).all()
                 if value else queryset)
